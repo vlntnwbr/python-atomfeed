@@ -107,6 +107,10 @@ class AtomImage:  # TODO
 
 
 # Atom Container Elements
+class AtomContent:  # TODO
+    """An Atom Content construct"""
+
+
 @dataclasses.dataclass(frozen=True)
 class FeedEntry:  # pylint: disable=too-many-instance-attributes
     """An entry for an Atom feed"""
