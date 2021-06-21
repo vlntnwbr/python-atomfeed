@@ -45,23 +45,22 @@ class AtomPerson:
 
 @dataclasses.dataclass(frozen=True)
 class AtomDate:
-    """An Atom Date Construct defaults to UTC if no timefmt is given."""
+    """Atom Date Construct (default UTC)."""
 
     time: datetime.datetime
-    timefmt: Optional[str] = "%Y-%m-%dT%H:%M:%SZ"
+    timeformat: Optional[str] = "%Y-%m-%dT%H:%M:%SZ"
 
     def __str__(self) -> str:
-        return self.time.strftime(self.timefmt)
+        return self.time.strftime(self.timeformat)
 
     @classmethod
-    def from_timestamp(cls, timestamp: str, timefmt: Optional[str] = None):
+    def from_timestamp(cls, timestamp: str, timeformat: Optional[str] = None):
         """Create AtomDate from timestamp as defined in rfc4287 #3.3"""
 
-        if timefmt is None:
-            timefmt = cls.timefmt
-        print(timefmt)
-        time = datetime.datetime.strptime(timestamp, timefmt)
-        return cls(time, timefmt)
+        if timeformat is None:
+            timeformat = cls.timeformat
+        time = datetime.datetime.strptime(timestamp, timeformat)
+        return cls(time, timeformat)
 
 
 @dataclasses.dataclass(frozen=True)
