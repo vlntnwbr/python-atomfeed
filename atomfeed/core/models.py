@@ -28,8 +28,8 @@ EtreeAttribute = Union[bytes, str]
 class AtomText:
     """An Atom Text construct"""
 
-    type: str
     content: str
+    type: str = "text"
 
 
 @dataclasses.dataclass(frozen=True)
