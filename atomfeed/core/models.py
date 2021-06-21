@@ -80,3 +80,19 @@ class FeedEntry:
 @dataclasses.dataclass(frozen=True)
 class AtomFeed:
     """Base class for an Atom Feed"""
+
+    """Base class for an Atom Feed"""
+
+    title: Any  # TODO
+    updated: AtomDate
+    authors: List[AtomPerson]  # TODO: only optional if all entries have author
+    generator: Any  # TODO
+    icon: Any  # TODO
+    id: AtomId  # pylint: disable=invalid-name
+    link: str
+    logo: Any  # TODO
+    rights: Any  # TODO
+    subtitle: Any  # TODO
+    categories: Optional[List[AtomCategory]] = None
+    contributors: Optional[List[AtomPerson]] = None
+    entries: Optional[List[FeedEntry]] = None
