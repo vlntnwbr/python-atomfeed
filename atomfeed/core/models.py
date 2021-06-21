@@ -148,7 +148,7 @@ class AtomFeed:  # pylint: disable=too-many-instance-attributes
     contributors: Optional[List[AtomPerson]] = None
     generator: Optional[AtomGenerator] = AtomGenerator()
     icon: Optional[AtomImage] = None
-    link: Optional[AtomLink] = None
+    links: Optional[List[AtomLink]] = None
     # TODO: should contain link with attribute 'self' that points to feed
     #       must not contain more than one with 'rel'='alternate
     #       and same combination of 'type' and 'hreflang'
