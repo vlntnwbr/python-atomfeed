@@ -13,31 +13,37 @@
 
 """Utility for python-atomfeed"""
 
-from typing import Any, Dict, Optional, Union
+from typing import Dict, Optional
 
 from lxml import etree
 
 from .models import EtreeAttribute
 
+# pylint: disable=c-extension-no-member
+
+
 def make_subelement(
-    parent: etree._Element,
+    parent: etree._Element,  # pylint: disable=protected-access
     tag: EtreeAttribute,
     text: EtreeAttribute,
-    attrib: Dict[EtreeAttribute, EtreeAttribute] = {},
+    attrib: Optional[Dict[EtreeAttribute, EtreeAttribute]] = None,
     nsmap: Optional[EtreeAttribute] = None,
     **extra: Optional[EtreeAttribute]
-    ) -> etree.SubElement:
+) -> etree.SubElement:
     """Create lxml.etree.SubElement with text"""
+
+    if attrib is None:
+        attrib = {}
     elem = etree.SubElement(parent, tag, attrib, nsmap, **extra)
     elem.text = text
     return elem
 
 
 def write_xml(
-    xml: etree._Element,
-    filename: str, 
+    xml: etree._Element,  # pylint: disable=protected-access
+    filename: str,
     encoding: Optional[str] = "UTF-8"
-    ) -> None:
+) -> None:
     """Write pretty-printed, encoded lxml.etree.tostring to filename"""
 
     xml_str = etree.tostring(
