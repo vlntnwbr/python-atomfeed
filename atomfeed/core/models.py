@@ -16,7 +16,7 @@
 import dataclasses
 import datetime
 
-from typing import Any, List, Optional, Union
+from typing import List, Optional, Union
 from uuid import UUID, uuid4
 
 
@@ -130,7 +130,7 @@ class FeedEntry:  # pylint: disable=too-many-instance-attributes
     summary: Optional[AtomText] = None
     # TODO: required if content has 'src' attribute and is thus empty
     #       or content is base64 encoded
-    
+
 
 @dataclasses.dataclass(frozen=True)
 class AtomFeed:  # pylint: disable=too-many-instance-attributes
