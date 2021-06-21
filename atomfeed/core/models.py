@@ -16,7 +16,7 @@
 import dataclasses
 import datetime
 
-from typing import List, Optional, Union
+from typing import List, NewType, Optional, Union
 from uuid import UUID, uuid4
 
 
@@ -61,9 +61,7 @@ class AtomDate:
         return cls(time, timeformat)
 
 
-@dataclasses.dataclass(frozen=True)
-class AtomImage:  # TODO
-    """Base class for atom image elements: AtomIcon | AtomLogo"""
+AtomImage = NewType("AtomImage", str)
 
 
 # Atom Metadata Elements
