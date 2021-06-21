@@ -16,27 +16,36 @@
 import dataclasses
 import datetime
 
-from typing import Optional, Union
+from typing import Any, List, Optional, Union
 from uuid import UUID, uuid4
 
 
 EtreeAttribute = Union[bytes, str]
 
 
+# Atom Metadata Elements
 class AtomId(UUID):
     """Class for urn:uuid identifier for atom feed and entries"""
 
     def __init__(self, urn: Optional[str] = None) -> None:
-        
+
         if urn is None:
-            urn = uuid4().urn       
-        
+            urn = uuid4().urn
+
         super().__init__(urn)
 
 
 @dataclasses.dataclass(frozen=True)
+class AtomText:
+    """An Atom Text construct"""
+
+    type: str
+    content: str
+
+
+@dataclasses.dataclass(frozen=True)
 class AtomPerson:
-    """An Atom Person Construct"""
+    """An Atom Person construct"""
 
     name: str
     uri: Optional[str] = None
@@ -45,7 +54,7 @@ class AtomPerson:
 
 @dataclasses.dataclass(frozen=True)
 class AtomDate:
-    """Atom Date Construct (default UTC)."""
+    """An Atom Date construct (default UTC)."""
 
     time: datetime.datetime
     timeformat: Optional[str] = "%Y-%m-%dT%H:%M:%SZ"
@@ -73,14 +82,58 @@ class AtomCategory:
 
 
 @dataclasses.dataclass(frozen=True)
-class FeedEntry:
-    """An entry for an Atom feed"""
+class AtomGenerator:  # TODO
+    """An Atom Generator construct"""
 
 
 @dataclasses.dataclass(frozen=True)
-class AtomFeed:
-    """Base class for an Atom Feed"""
+class AtomSummary:  # TODO
+    """An Atom Summary construct"""
 
+
+@dataclasses.dataclass(frozen=True)
+class AtomLink:  # TODO
+    """An Atom Link construct"""
+
+
+@dataclasses.dataclass(frozen=True)
+class AtomSource:  # TODO
+    """An Atom Source construct"""
+
+
+@dataclasses.dataclass(frozen=True)
+class AtomImage:  # TODO
+    """Base class for atom image elements: AtomIcon | AtomLogo"""
+
+
+# Atom Container Elements
+@dataclasses.dataclass(frozen=True)
+class FeedEntry:  # pylint: disable=too-many-instance-attributes
+    """An entry for an Atom feed"""
+
+    title: Any  # TODO
+    updated: AtomDate
+    id: AtomId  # pylint: disable=invalid-name
+    content: Any  # TODO
+    authors: Optional[List[AtomPerson]]
+    # TODO: optional if source with author is given
+    #       or the parent feed has an author element
+    link: Any
+    # TODO: required if content is empty.
+    # Then it must have the attributes
+    # 'rel'='alternate', and same combination of 'type' & 'hreflang'
+    published: Optional[AtomDate]
+    rights: Any  # TODO: optional
+    source: Any  # TODO: optional
+    summary: Any
+    # TODO: required if content has 'src' attribute and is thus empty
+    #       or content is base64 encoded
+    categories: Optional[List[AtomCategory]] = None
+    contributors: Optional[List[AtomPerson]] = None
+
+
+@dataclasses.dataclass(frozen=True)
+class AtomFeed:  # pylint: disable=too-many-instance-attributes
     """Base class for an Atom Feed"""
 
     title: Any  # TODO
