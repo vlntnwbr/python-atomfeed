@@ -115,26 +115,26 @@ class AtomContent:  # TODO
 class FeedEntry:  # pylint: disable=too-many-instance-attributes
     """An entry for an Atom feed"""
 
-    title: Any  # TODO
+    title: AtomText
     updated: AtomDate
     id: AtomId  # pylint: disable=invalid-name
-    content: Any  # TODO
-    authors: Optional[List[AtomPerson]]
+    content: AtomContent
+    authors: Optional[List[AtomPerson]] = None
     # TODO: optional if source with author is given
     #       or the parent feed has an author element
-    link: Any
+    categories: Optional[List[AtomCategory]] = None
+    contributors: Optional[List[AtomPerson]] = None
+    links: Optional[List[AtomLink]] = None
     # TODO: required if content is empty.
     # Then it must have the attributes
     # 'rel'='alternate', and same combination of 'type' & 'hreflang'
-    published: Optional[AtomDate]
-    rights: Any  # TODO: optional
-    source: Any  # TODO: optional
-    summary: Any
+    published: Optional[AtomDate] = None
+    rights: Optional[AtomText] = None  # TODO: optional
+    source: Optional[AtomSource] = None
+    summary: Optional[AtomSummary] = None
     # TODO: required if content has 'src' attribute and is thus empty
     #       or content is base64 encoded
-    categories: Optional[List[AtomCategory]] = None
-    contributors: Optional[List[AtomPerson]] = None
-
+    
 
 @dataclasses.dataclass(frozen=True)
 class AtomFeed:  # pylint: disable=too-many-instance-attributes
