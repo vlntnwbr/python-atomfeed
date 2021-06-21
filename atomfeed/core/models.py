@@ -23,18 +23,7 @@ from uuid import UUID, uuid4
 EtreeAttribute = Union[bytes, str]
 
 
-# Atom Metadata Elements
-class AtomId(UUID):
-    """Class for urn:uuid identifier for atom feed and entries"""
-
-    def __init__(self, urn: Optional[str] = None) -> None:
-
-        if urn is None:
-            urn = uuid4().urn
-
-        super().__init__(urn)
-
-
+# Atom Common Constructs
 @dataclasses.dataclass(frozen=True)
 class AtomText:
     """An Atom Text construct"""
@@ -73,6 +62,12 @@ class AtomDate:
 
 
 @dataclasses.dataclass(frozen=True)
+class AtomImage:  # TODO
+    """Base class for atom image elements: AtomIcon | AtomLogo"""
+
+
+# Atom Metadata Elements
+@dataclasses.dataclass(frozen=True)
 class AtomCategory:
     """An Atom Category construct"""
 
@@ -86,14 +81,15 @@ class AtomGenerator:  # TODO
     """An Atom Generator construct"""
 
 
-@dataclasses.dataclass(frozen=True)
-class AtomSummary:  # TODO
-    """An Atom Summary construct"""
+class AtomId(UUID):
+    """Class for urn:uuid identifier for atom feed and entries"""
 
+    def __init__(self, urn: Optional[str] = None) -> None:
 
-@dataclasses.dataclass(frozen=True)
-class AtomLink:  # TODO
-    """An Atom Link construct"""
+        if urn is None:
+            urn = uuid4().urn
+
+        super().__init__(urn)
 
 
 @dataclasses.dataclass(frozen=True)
@@ -102,8 +98,8 @@ class AtomSource:  # TODO
 
 
 @dataclasses.dataclass(frozen=True)
-class AtomImage:  # TODO
-    """Base class for atom image elements: AtomIcon | AtomLogo"""
+class AtomLink:  # TODO
+    """An Atom Link construct"""
 
 
 # Atom Container Elements
@@ -131,7 +127,7 @@ class FeedEntry:  # pylint: disable=too-many-instance-attributes
     published: Optional[AtomDate] = None
     rights: Optional[AtomText] = None  # TODO: optional
     source: Optional[AtomSource] = None
-    summary: Optional[AtomSummary] = None
+    summary: Optional[AtomText] = None
     # TODO: required if content has 'src' attribute and is thus empty
     #       or content is base64 encoded
     
