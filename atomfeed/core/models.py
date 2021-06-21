@@ -136,16 +136,19 @@ class FeedEntry:  # pylint: disable=too-many-instance-attributes
 class AtomFeed:  # pylint: disable=too-many-instance-attributes
     """Base class for an Atom Feed"""
 
-    title: Any  # TODO
+    title: AtomText
     updated: AtomDate
-    authors: List[AtomPerson]  # TODO: only optional if all entries have author
-    generator: Any  # TODO
-    icon: Any  # TODO
     id: AtomId  # pylint: disable=invalid-name
-    link: str
-    logo: Any  # TODO
-    rights: Any  # TODO
-    subtitle: Any  # TODO
+    authors: Optional[List[AtomPerson]]  # TODO: only optional if all entries have author
     categories: Optional[List[AtomCategory]] = None
     contributors: Optional[List[AtomPerson]] = None
+    generator: Optional[AtomGenerator] = AtomGenerator()
+    icon: Optional[AtomImage] = None
+    link: Optional[AtomLink] = None
+    # TODO: should contain link with attribute 'self' that points to feed
+    #       must not contain more than one with 'rel'='alternate
+    #       and same combination of 'type' and 'hreflang'
+    logo: Optional[AtomImage] = None
+    rights: Optional[AtomText] = None
+    subtitle: Optional[AtomText] = None
     entries: Optional[List[FeedEntry]] = None
