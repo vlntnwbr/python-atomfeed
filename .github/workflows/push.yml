@@ -1,0 +1,75 @@
+name: Tests
+
+on:
+  push:
+    tags:
+      - v*
+    branches:
+      - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.8
+    - name: Set up Environment
+      id: prep
+      run: |
+        python -m pip install -q --upgrade pip pipenv setuptools wheel
+        pipenv install -d
+        pipenv graph
+        echo "::set-output name=package::atomfeed"
+    - name: Run Flake8
+      if: ${{ github.ref == 'refs/heads/master' }}
+      id: flake8
+      run : pipenv run flake8 --doctests --max-doc-length 72 ${{ steps.prep.outputs.package }} setup.py
+    - name: Run Pylint
+      if: ${{ github.ref == 'refs/heads/master' }}
+      id: pylint
+      run: pipenv run pylint -f colorized ${{ steps.prep.outputs.package }} setup.py || pipenv run pylint-exit -efail -wfail $?
+    - name: Check Docstyle
+      id: pydocstyle
+      run: pipenv run pydocstyle deploy ${{ steps.prep.outputs.package }} setup.py
+    - name: Check Security vulnerabilities
+      id: security
+      run: |
+        pipenv run bandit -r deploy ${{ steps.prep.outputs.package }} setup.py
+    # - name: Build Source Distribution
+    #  id: build
+    #  run: |
+    #    name=$(python setup.py --name)
+    #    version=$(python setup.py --version)
+    #    echo "::set-output name=name::${name}"
+    #    echo "::set-output name=sdist::${name}-${version}.tar.gz"
+    #    echo "::set-output name=bdist::${{ steps.prep.outputs.package }}-${version}-py3-none-any.whl"
+    - name: Create Release
+      if: ${{ startsWith( github.ref, 'refs/tags/v' ) }}
+      id: release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: ${{ steps.build.outputs.name }} ${{ github.ref }}
+    - name: Upload Source Distribution
+      if: ${{ startsWith( github.ref, 'refs/tags/v' ) }}
+      id: upload_sdist
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.release.outputs.upload_url }}
+        asset_path: ./dist/${{ steps.build.outputs.sdist }}
+        asset_name: ${{ steps.build.outputs.name }}.tar.gz
+        asset_content_type: application/x-gzip
+    - name: Publish PyPI  # only on tags starting with v
+      if: ${{ startsWith( github.ref, 'refs/tags/v' ) }}
+      uses: pypa/gh-action-pypi-publish@master
+      with:
+        password: ${{ secrets.PYPI_TOKEN }}
