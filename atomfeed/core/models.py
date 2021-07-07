@@ -61,7 +61,7 @@ class AtomDate:
         return cls(time, timeformat)
 
 
-AtomImage = NewType("AtomImage", str)
+AtomUri = NewType("AtomUri", str)
 
 
 # Atom Metadata Elements
@@ -75,8 +75,12 @@ class AtomCategory:
 
 
 @dataclasses.dataclass(frozen=True)
-class AtomGenerator:  # TODO
+class AtomGenerator:
     """An Atom Generator construct"""
+
+    name: AtomText
+    uri: Optional[AtomUri] = None
+    version: Optional[AtomText] = None
 
 
 class AtomId(UUID):
@@ -99,8 +103,11 @@ class AtomSource:  # TODO
 class AtomLink:  # TODO
     """An Atom Link construct"""
 
+    href: AtomUri
+
 
 # Atom Container Elements
+@dataclasses.dataclass(frozen=True)
 class AtomContent:  # TODO
     """An Atom Content construct"""
 
@@ -137,16 +144,16 @@ class AtomFeed:  # pylint: disable=too-many-instance-attributes
     title: AtomText
     updated: AtomDate
     id: AtomId  # pylint: disable=invalid-name
-    authors: Optional[List[AtomPerson]]  # TODO: only optional if all entries have author
+    authors: Optional[List[AtomPerson]] = None  # TODO: only optional if all entries have author
     categories: Optional[List[AtomCategory]] = None
     contributors: Optional[List[AtomPerson]] = None
     generator: Optional[AtomGenerator] = AtomGenerator()
-    icon: Optional[AtomImage] = None
+    icon: Optional[AtomUri] = None
     links: Optional[List[AtomLink]] = None
     # TODO: should contain link with attribute 'self' that points to feed
     #       must not contain more than one with 'rel'='alternate
     #       and same combination of 'type' and 'hreflang'
-    logo: Optional[AtomImage] = None
+    logo: Optional[AtomUri] = None
     rights: Optional[AtomText] = None
     subtitle: Optional[AtomText] = None
     entries: Optional[List[FeedEntry]] = None
