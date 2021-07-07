@@ -12,6 +12,12 @@
 
 # Python Atom Feed
 This will eventually be a generator (and maybe parser) for atom feeds as
-specified [rfc4287][rfc4287].
+specified [rfc4287][rfc4287]. As of right now the generator does not support
+the atom extensions defined in Section 6 of the specification.
+
+In order to create pretty XML for easier readability this generator uses
+[lxml][lxml] which depends on the *libxml2* and *libxslt* libraries. Those may
+have to be installed separately.
 
 [rfc4287]: https://datatracker.ietf.org/doc/html/rfc4287
+[lxml]: https://pypi.org/project/lxml/
