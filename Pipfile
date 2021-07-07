@@ -22,6 +22,8 @@ lxml = "*"
 [dev-packages]
 flake8 = "*"
 pylint = "*"
+bandit = "*"
+pydocstyle = "*"
 
 [requires]
 python_version = "3.9"

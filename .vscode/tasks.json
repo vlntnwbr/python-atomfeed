@@ -1,0 +1,35 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {  // pylint
+            "label": "pylint",
+            "type": "shell",
+            "command": "pipenv",
+            "args": ["run", "pylint", "-f", "colorized", "atomfeed", "setup.py"],
+            "problemMatcher": ["$eslint-compact"]
+        },
+        {  // flake8
+            "label": "flake8",
+            "type": "shell",
+            "command": "pipenv",
+            "args": ["run", "flake8", "atomfeed", "setup.py"],
+            "problemMatcher": ["$eslint-compact"]
+        },
+        {  // pydocstyle
+            "label": "pydocstyle",
+            "type": "shell",
+            "command": "pipenv",
+            "args": ["run", "pydocstyle", "atomfeed", "setup.py"],
+            "problemMatcher": ["$eslint-compact"]
+        },  
+        {  // bandit
+            "label": "bandit",
+            "type": "shell",
+            "command": "pipenv",
+            "args": ["run", "bandit", "-r", "atomfeed", "setup.py"],
+            "problemMatcher": ["$eslint-compact"]
+        }
+    ]
+}
