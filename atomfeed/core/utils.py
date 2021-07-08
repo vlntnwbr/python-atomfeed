@@ -15,38 +15,33 @@
 
 from typing import Dict, Optional
 
-from lxml import etree  # nosec (only used for writing, not parsing)
+from xml.dom import minidom
+from xml.etree import ElementTree as ET  # nosec (not used for parsing)
 
 from .models import EtreeAttribute
 
-# pylint: disable=c-extension-no-member
-
 
 def make_subelement(
-    parent: etree._Element,  # pylint: disable=protected-access
+    parent: ET.Element,
     tag: EtreeAttribute,
     text: EtreeAttribute,
     attrib: Optional[Dict[EtreeAttribute, EtreeAttribute]] = None,
-    nsmap: Optional[EtreeAttribute] = None,
     **extra: Optional[EtreeAttribute]
-) -> etree.SubElement:
+) -> ET.SubElement:
     """Create lxml.etree.SubElement with text."""
     if attrib is None:
         attrib = {}
-    elem = etree.SubElement(parent, tag, attrib, nsmap, **extra)
+    elem = ET.SubElement(parent, tag, attrib, **extra)
     elem.text = text
     return elem
 
 
 def write_xml(
-    xml: etree._Element,  # pylint: disable=protected-access
+    xml: ET.Element,
     filename: str,
     encoding: Optional[str] = "UTF-8"
 ) -> None:
     """Write pretty, encoded lxml.etree.tostring to filename."""
-    xml_str = etree.tostring(
-        xml, pretty_print=True, xml_declaration=True, encoding=encoding
-    ).decode(encoding)
-
-    with open(filename, "w", encoding=encoding) as xml_file:
-        xml_file.write(xml_str)
+    xml_str = minidom.parseString(ET.tostring(xml, xml_declaration=True))
+    with open(filename, "wb") as xml_file:
+        xml_file.write(xml_str.toprettyxml(encoding=encoding))

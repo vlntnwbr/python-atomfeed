@@ -148,7 +148,7 @@ class AtomFeed:  # pylint: disable=too-many-instance-attributes
     # TODO: only optional if all entries have author
     categories: Optional[List[AtomCategory]] = None
     contributors: Optional[List[AtomPerson]] = None
-    generator: Optional[AtomGenerator] = AtomGenerator()
+    generator: Optional[AtomGenerator] = None
     icon: Optional[AtomUri] = None
     links: Optional[List[AtomLink]] = None
     # TODO: should contain link with attribute 'self' pointing to feed

@@ -17,7 +17,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-lxml = "*"
 
 [dev-packages]
 flake8 = "*"
