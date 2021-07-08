@@ -11,11 +11,11 @@
 #   official translations of the licence in another language of the EU.
 ##
 
-"""Utility for python-atomfeed"""
+"""Utilities for python-atomfeed."""
 
 from typing import Dict, Optional
 
-from lxml import etree
+from lxml import etree  # nosec (only used for writing, not parsing)
 
 from .models import EtreeAttribute
 
@@ -30,8 +30,7 @@ def make_subelement(
     nsmap: Optional[EtreeAttribute] = None,
     **extra: Optional[EtreeAttribute]
 ) -> etree.SubElement:
-    """Create lxml.etree.SubElement with text"""
-
+    """Create lxml.etree.SubElement with text."""
     if attrib is None:
         attrib = {}
     elem = etree.SubElement(parent, tag, attrib, nsmap, **extra)
@@ -44,8 +43,7 @@ def write_xml(
     filename: str,
     encoding: Optional[str] = "UTF-8"
 ) -> None:
-    """Write pretty-printed, encoded lxml.etree.tostring to filename"""
-
+    """Write pretty, encoded lxml.etree.tostring to filename."""
     xml_str = etree.tostring(
         xml, pretty_print=True, xml_declaration=True, encoding=encoding
     ).decode(encoding)

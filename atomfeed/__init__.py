@@ -11,4 +11,4 @@
 #   official translations of the licence in another language of the EU.
 ##
 
-"""Main package for python-atomfeed"""
+"""Main package for python-atomfeed."""

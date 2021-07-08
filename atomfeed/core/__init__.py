@@ -11,4 +11,4 @@
 #   official translations of the licence in another language of the EU.
 ##
 
-"""Core functionality for python-atomfeed"""
+"""Core functionality for python-atomfeed."""

@@ -11,7 +11,7 @@
 #   official translations of the licence in another language of the EU.
 ##
 
-"""Data models for python-atomfeed according to rfc4287"""
+"""Data models for python-atomfeed according to rfc4287."""
 
 import dataclasses
 import datetime
@@ -26,7 +26,7 @@ EtreeAttribute = Union[bytes, str]
 # Atom Common Constructs
 @dataclasses.dataclass(frozen=True)
 class AtomText:
-    """An Atom Text construct"""
+    """An Atom Text construct."""
 
     content: str
     type: str = "text"
@@ -34,7 +34,7 @@ class AtomText:
 
 @dataclasses.dataclass(frozen=True)
 class AtomPerson:
-    """An Atom Person construct"""
+    """An Atom Person construct."""
 
     name: str
     uri: Optional[str] = None
@@ -49,12 +49,12 @@ class AtomDate:
     timeformat: Optional[str] = "%Y-%m-%dT%H:%M:%SZ"
 
     def __str__(self) -> str:
+        """Return strafed time using object's defined timeformat."""
         return self.time.strftime(self.timeformat)
 
     @classmethod
     def from_timestamp(cls, timestamp: str, timeformat: Optional[str] = None):
-        """Create AtomDate from timestamp as defined in rfc4287 #3.3"""
-
+        """Create AtomDate from rfc4287 #3.3 timestamp."""
         if timeformat is None:
             timeformat = cls.timeformat
         time = datetime.datetime.strptime(timestamp, timeformat)
@@ -67,7 +67,7 @@ AtomUri = NewType("AtomUri", str)
 # Atom Metadata Elements
 @dataclasses.dataclass(frozen=True)
 class AtomCategory:
-    """An Atom Category construct"""
+    """An Atom Category construct."""
 
     term: str
     scheme: Optional[str] = None
@@ -76,7 +76,7 @@ class AtomCategory:
 
 @dataclasses.dataclass(frozen=True)
 class AtomGenerator:
-    """An Atom Generator construct"""
+    """An Atom Generator construct."""
 
     name: AtomText
     uri: Optional[AtomUri] = None
@@ -84,10 +84,10 @@ class AtomGenerator:
 
 
 class AtomId(UUID):
-    """Class for urn:uuid identifier for atom feed and entries"""
+    """Class for urn:uuid identifier for atom feed and entries."""
 
     def __init__(self, urn: Optional[str] = None) -> None:
-
+        """Create new UUID or instance object using urn:uuid string."""
         if urn is None:
             urn = uuid4().urn
 
@@ -96,12 +96,12 @@ class AtomId(UUID):
 
 @dataclasses.dataclass(frozen=True)
 class AtomSource:  # TODO
-    """An Atom Source construct"""
+    """An Atom Source construct."""
 
 
 @dataclasses.dataclass(frozen=True)
 class AtomLink:  # TODO
-    """An Atom Link construct"""
+    """An Atom Link construct."""
 
     href: AtomUri
 
@@ -109,12 +109,12 @@ class AtomLink:  # TODO
 # Atom Container Elements
 @dataclasses.dataclass(frozen=True)
 class AtomContent:  # TODO
-    """An Atom Content construct"""
+    """An Atom Content construct."""
 
 
 @dataclasses.dataclass(frozen=True)
 class FeedEntry:  # pylint: disable=too-many-instance-attributes
-    """An entry for an Atom feed"""
+    """An entry for an Atom feed."""
 
     title: AtomText
     updated: AtomDate
@@ -139,12 +139,13 @@ class FeedEntry:  # pylint: disable=too-many-instance-attributes
 
 @dataclasses.dataclass(frozen=True)
 class AtomFeed:  # pylint: disable=too-many-instance-attributes
-    """Base class for an Atom Feed"""
+    """Base class for an Atom Feed."""
 
     title: AtomText
     updated: AtomDate
     id: AtomId  # pylint: disable=invalid-name
-    authors: Optional[List[AtomPerson]] = None  # TODO: only optional if all entries have author
+    authors: Optional[List[AtomPerson]] = None
+    # TODO: only optional if all entries have author
     categories: Optional[List[AtomCategory]] = None
     contributors: Optional[List[AtomPerson]] = None
     generator: Optional[AtomGenerator] = AtomGenerator()
