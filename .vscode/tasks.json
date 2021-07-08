@@ -14,7 +14,7 @@
             "label": "flake8",
             "type": "shell",
             "command": "pipenv",
-            "args": ["run", "flake8", "atomfeed", "setup.py"],
+            "args": ["run", "flake8", "--doctests", "--max-doc-length", "72", "atomfeed", "setup.py"],
             "problemMatcher": ["$eslint-compact"]
         },
         {  // pydocstyle
