@@ -25,6 +25,13 @@ jobs:
         pipenv install -d
         pipenv graph
         echo "::set-output name=package::atomfeed"
+    - name: Run Bandit Security Checks
+      id: security
+      run: |
+        pipenv run bandit -r deploy ${{ steps.prep.outputs.package }} setup.py
+    - name: Run pydocstyle Checks
+      id: pydocstyle
+      run: pipenv run pydocstyle deploy ${{ steps.prep.outputs.package }} setup.py
     - name: Run Flake8
       if: ${{ github.ref == 'refs/heads/master' }}
       id: flake8
@@ -33,13 +40,6 @@ jobs:
       if: ${{ github.ref == 'refs/heads/master' }}
       id: pylint
       run: pipenv run pylint -f colorized ${{ steps.prep.outputs.package }} setup.py || pipenv run pylint-exit -efail -wfail $?
-    - name: Check Docstyle
-      id: pydocstyle
-      run: pipenv run pydocstyle deploy ${{ steps.prep.outputs.package }} setup.py
-    - name: Check Security vulnerabilities
-      id: security
-      run: |
-        pipenv run bandit -r deploy ${{ steps.prep.outputs.package }} setup.py
     # - name: Build Source Distribution
     #  id: build
     #  run: |
