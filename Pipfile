@@ -17,6 +17,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+defusedxml = "*"
 
 [dev-packages]
 flake8 = "*"

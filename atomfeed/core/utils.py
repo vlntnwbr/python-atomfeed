@@ -15,8 +15,9 @@
 
 from typing import Dict, Optional
 
-from xml.dom import minidom
 from xml.etree import ElementTree as ET  # nosec (not used for parsing)
+
+from defusedxml import minidom
 
 from .models import EtreeAttribute
 
@@ -28,7 +29,7 @@ def make_subelement(
     attrib: Optional[Dict[EtreeAttribute, EtreeAttribute]] = None,
     **extra: Optional[EtreeAttribute]
 ) -> ET.SubElement:
-    """Create lxml.etree.SubElement with text."""
+    """Make xml.etree.ElementTree.SubElement with given text value."""
     if attrib is None:
         attrib = {}
     elem = ET.SubElement(parent, tag, attrib, **extra)
@@ -41,7 +42,7 @@ def write_xml(
     filename: str,
     encoding: Optional[str] = "UTF-8"
 ) -> None:
-    """Write pretty, encoded lxml.etree.tostring to filename."""
+    """Write XML to file. Pretty-printed with encoding & declaration."""
     xml_str = minidom.parseString(ET.tostring(xml, xml_declaration=True))
     with open(filename, "wb") as xml_file:
         xml_file.write(xml_str.toprettyxml(encoding=encoding))
